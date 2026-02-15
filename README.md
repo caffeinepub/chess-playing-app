@@ -1,2 +1,3 @@
-# chess-playing-app
-Exported from Caffeine project: Chess-playing app
+## Instagram-like social media app (feed, profiles, posting, follow, likes, comments)
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

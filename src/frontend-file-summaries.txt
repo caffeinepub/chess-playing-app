@@ -1,0 +1,19 @@
+{
+  "frontend/src/App.tsx": "Main app component with TanStack Router setup, authentication gating via RootLayout component, profile setup dialog, and routes for feed, create post, post detail, and profile pages.",
+  "frontend/src/hooks/useAuth.ts": "Authentication helper hook that wraps useInternetIdentity and provides isAuthenticated state plus logout with query cache clearing.",
+  "frontend/src/hooks/useQueries.ts": "Centralized React Query hooks for all backend operations including feed, posts, comments, profiles, likes, and follows with proper cache invalidation.",
+  "frontend/src/components/auth/LoginCard.tsx": "Sign-in screen with logo, branding, and Internet Identity login button for unauthenticated users.",
+  "frontend/src/components/auth/ProfileSetupDialog.tsx": "First-login profile setup modal that collects display name and bio without flashing on load.",
+  "frontend/src/components/layout/AppShell.tsx": "App layout with top navigation bar (logo, user menu), bottom navigation (feed, create, profile), and main content area.",
+  "frontend/src/pages/FeedPage.tsx": "Home feed page with infinite scroll, post cards, loading states, and empty state with illustration.",
+  "frontend/src/components/posts/PostCard.tsx": "Post card component displaying image, author, caption, like button with optimistic updates, and comment navigation.",
+  "frontend/src/pages/CreatePostPage.tsx": "Create post page with image upload, preview, caption input, upload progress, and validation.",
+  "frontend/src/pages/PostDetailPage.tsx": "Post detail page showing full post, like button, comments list, and comment composer.",
+  "frontend/src/components/comments/CommentList.tsx": "Comments list component with loading, empty, and populated states showing author and timestamp (fixed Tailwind v3 class).",
+  "frontend/src/components/comments/CommentComposer.tsx": "Comment input form with validation, character count, and submission handling.",
+  "frontend/src/pages/ProfilePage.tsx": "Profile page showing avatar, bio, follower/following counts, and edit button for own profile.",
+  "frontend/src/components/profile/EditProfileDialog.tsx": "Profile editing dialog for updating display name, bio, and avatar image with upload support.",
+  "frontend/src/index.css": "Global styles with warm coral/peach OKLCH color system for light and dark modes, avoiding blue/purple palette.",
+  "frontend/tailwind.config.js": "Tailwind configuration with Inter font, custom shadows, and extended theme tokens matching the coral/peach design system.",
+  "frontend/index.html": "HTML entry point with Inter font preload and updated title for Snaply social media app."
+}

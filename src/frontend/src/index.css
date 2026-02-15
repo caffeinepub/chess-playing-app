@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.75rem;
+        --background: 0.99 0 0;
+        --foreground: 0.15 0 0;
+        --card: 1 0 0;
+        --card-foreground: 0.15 0 0;
+        --popover: 1 0 0;
+        --popover-foreground: 0.15 0 0;
+        --primary: 0.65 0.18 25;
+        --primary-foreground: 0.99 0 0;
+        --secondary: 0.96 0.02 50;
+        --secondary-foreground: 0.15 0 0;
+        --muted: 0.96 0.01 50;
+        --muted-foreground: 0.50 0.02 50;
+        --accent: 0.97 0.03 40;
+        --accent-foreground: 0.15 0 0;
+        --destructive: 0.55 0.22 15;
+        --destructive-foreground: 0.99 0 0;
+        --border: 0.92 0.01 50;
+        --input: 0.92 0.01 50;
+        --ring: 0.65 0.18 25;
+        --chart-1: 0.65 0.18 25;
+        --chart-2: 0.70 0.15 45;
+        --chart-3: 0.60 0.20 15;
+        --chart-4: 0.75 0.12 60;
+        --chart-5: 0.55 0.22 10;
+    }
+
+    .dark {
+        --background: 0.12 0 0;
+        --foreground: 0.98 0 0;
+        --card: 0.18 0 0;
+        --card-foreground: 0.98 0 0;
+        --popover: 0.15 0 0;
+        --popover-foreground: 0.98 0 0;
+        --primary: 0.70 0.20 30;
+        --primary-foreground: 0.12 0 0;
+        --secondary: 0.25 0.02 40;
+        --secondary-foreground: 0.98 0 0;
+        --muted: 0.25 0.02 40;
+        --muted-foreground: 0.65 0.02 40;
+        --accent: 0.30 0.04 35;
+        --accent-foreground: 0.98 0 0;
+        --destructive: 0.60 0.25 20;
+        --destructive-foreground: 0.98 0 0;
+        --border: 0.30 0.02 40;
+        --input: 0.30 0.02 40;
+        --ring: 0.70 0.20 30;
+        --chart-1: 0.70 0.20 30;
+        --chart-2: 0.75 0.18 50;
+        --chart-3: 0.65 0.22 15;
+        --chart-4: 0.80 0.15 65;
+        --chart-5: 0.60 0.25 10;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}

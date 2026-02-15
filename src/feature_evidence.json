@@ -1,0 +1,162 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-internet-identity-authentication-and-a-signed-in-signed-out-app-state-so-users-can-sign-in-out-and-the-ui-reflects-the-current-authenticated-principal",
+      "featureTitle": "Implement Internet Identity authentication and a signed-in/signed-out app state, so users can sign in/out and the UI reflects the current authenticated principal.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LoginCard.tsx",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/hooks/useAuth.ts",
+        "frontend/src/main.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-core-feed-experience-a-home-feed-showing-a-list-of-posts-from-followed-accounts-and-or-global-fallback-with-post-cards-that-display-author-image-caption-like-count-comment-count-and-creation-time-include-pagination-infinite-loading",
+      "featureTitle": "Build the core feed experience: a home feed showing a list of posts (from followed accounts and/or global fallback), with post cards that display author, image, caption, like count, comment count, and creation time; include pagination/infinite loading.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/components/posts/PostCard.tsx",
+        "frontend/src/pages/FeedPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-post-creation-ui-and-flow-allow-a-signed-in-user-to-select-an-image-preview-it-write-a-caption-and-publish-on-success-the-new-post-appears-in-the-feed-and-on-the-user-profile",
+      "featureTitle": "Implement post creation UI and flow: allow a signed-in user to select an image, preview it, write a caption, and publish; on success, the new post appears in the feed and on the user profile.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/CreatePostPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-comments-on-posts-a-post-detail-view-or-expandable-section-where-users-can-read-comments-and-add-a-new-comment-include-basic-input-validation-and-loading-error-states",
+      "featureTitle": "Implement comments on posts: a post detail view (or expandable section) where users can read comments and add a new comment; include basic input validation and loading/error states.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/comments/CommentComposer.tsx",
+        "frontend/src/components/comments/CommentList.tsx",
+        "frontend/src/pages/PostDetailPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-user-profiles-profile-page-showing-avatar-display-name-bio-counts-posts-followers-following-follow-unfollow-button-for-other-users-and-a-grid-list-of-that-user-s-posts-allow-the-signed-in-user-to-edit-their-own-profile-fields",
+      "featureTitle": "Implement user profiles: profile page showing avatar, display name, bio, counts (posts/followers/following), follow/unfollow button for other users, and a grid/list of that user’s posts; allow the signed-in user to edit their own profile fields.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/profile/EditProfileDialog.tsx",
+        "frontend/src/pages/ProfilePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-coherent-distinctive-visual-theme-and-layout-system-for-the-instagram-like-ui-typography-spacing-light-dark-choices-component-styling-and-apply-it-consistently-across-feed-profile-and-create-post-flows-avoid-blue-purple-as-primary-colors",
+      "featureTitle": "Add a coherent, distinctive visual theme and layout system for the Instagram-like UI (typography, spacing, light/dark choices, component styling) and apply it consistently across feed, profile, and create-post flows (avoid blue/purple as primary colors).",
+      "files": [
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-static-generated-brand-assets-logo-app-icon-illustrations-to-the-frontend-and-render-them-in-the-ui-where-appropriate-e-g-sign-in-screen-app-bar-empty-states-store-generated-assets-under-frontend-public-assets-generated",
+      "featureTitle": "Add static generated brand assets (logo/app icon/illustrations) to the frontend and render them in the UI where appropriate (e.g., sign-in screen, app bar, empty states). Store generated assets under frontend/public/assets/generated.",
+      "files": [
+        "frontend/src/components/auth/LoginCard.tsx",
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/pages/FeedPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

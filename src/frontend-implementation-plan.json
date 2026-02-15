@@ -1,0 +1,343 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Instagram-like social media app (frontend: auth, feed, profiles, posting, follow, likes, comments)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement Internet Identity authentication with signed-in/signed-out UI state and gated access to core features.",
+      "acceptanceCriteria": [
+        "User can sign in using Internet Identity and sign out",
+        "When signed out, app shows a clear call-to-action to sign in",
+        "When signed in, app shows the user as authenticated and can access core features (feed, create post, profile)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app root that derives authenticated state from useInternetIdentity, gates core routes behind authentication, and renders a signed-out screen with a clear sign-in CTA. Use the authorization component guidance to ensure app data is not shown while signed out and to clear cached data on logout. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useAuth.ts",
+          "operation": "create",
+          "description": "Add a small auth helper hook that exposes isAuthenticated plus login/logout actions (wrapping useInternetIdentity) and performs React Query cache clearing on logout per the authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginCard.tsx",
+          "operation": "create",
+          "description": "Create a signed-out view component with English CTA text and branding (logo) prompting the user to sign in via Internet Identity."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a first-login profile setup dialog that uses React Query to call getCallerUserProfile and saveCallerUserProfile (per authorization component guidance) without flashing on initial load; collect display name and optional basics needed for the app shell. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Ensure the app is wrapped with QueryClientProvider and InternetIdentityProvider (already present) and wire in any required router provider used by App.tsx."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Build the home feed with post cards, pagination/infinite loading, like/unlike, and an empty state with illustration.",
+      "acceptanceCriteria": [
+        "Home feed renders a scrollable list of posts with image + caption + author",
+        "User can load more posts without a full page refresh (pagination or infinite scroll)",
+        "Like/unlike updates UI state and persists via backend API",
+        "If there are no posts, show an empty state message and illustration"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/FeedPage.tsx",
+          "operation": "create",
+          "description": "Implement the feed screen using React Query infinite loading for getFeed, showing loading/error/empty states and rendering a list of PostCard components; use the generated empty-feed illustration at frontend/public/assets/generated/empty-feed.dim_1200x600.png in the empty state."
+        },
+        {
+          "path": "frontend/src/components/posts/PostCard.tsx",
+          "operation": "create",
+          "description": "Create a post card UI that shows author name, image (via ExternalBlob.getDirectURL), caption, like count, comment count placeholder (from post detail/comments), and formatted creation time; include a like toggle button wired through React Query mutation."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useFeed.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for feed pagination/infinite scrolling (getFeed), with stable query keys suitable for invalidation after mutations."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useToggleLike.ts",
+          "operation": "create",
+          "description": "Create a React Query mutation hook calling toggleLike with optimistic UI updates (when safe) and invalidation of feed and any open post detail queries after success."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "create",
+          "description": "Add an app shell layout that includes a top app bar and/or bottom navigation appropriate for a feed-first social app; include a visible brand mark (logo) and a logout control when authenticated."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire FeedPage into the authenticated route tree and into navigation within AppShell so it is reachable."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement create-post UI: image selection + preview + caption + publish, with validation and immediate UI refresh.",
+      "acceptanceCriteria": [
+        "Create Post flow supports image selection, preview, caption entry, and publish action",
+        "Publish calls backend to persist the post and media",
+        "After publish, the post is visible in feed and on the author’s profile without requiring a manual reload",
+        "Validation prevents publishing without an image and provides user-facing error text in English"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/CreatePostPage.tsx",
+          "operation": "create",
+          "description": "Create the create-post screen with image file input, preview, caption input, and publish button; validate that an image is selected and show English error text when invalid."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useCreatePost.ts",
+          "operation": "create",
+          "description": "Implement a React Query mutation calling createPost; use the blob-storage component’s ExternalBlob.fromBytes (and optional withUploadProgress) to upload images and store the returned ExternalBlob reference. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/posts/ImagePicker.tsx",
+          "operation": "create",
+          "description": "Create an image picker component that reads a selected file into bytes, builds an ExternalBlob (blob-storage component), and provides a local preview while uploading. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire CreatePostPage into the authenticated route tree and navigation so signed-in users can access it."
+        },
+        {
+          "path": "frontend/src/hooks/queries/queryKeys.ts",
+          "operation": "create",
+          "description": "Centralize React Query keys for feed, profiles, posts, and comments to ensure consistent invalidation after creating a post (invalidate feed and the author profile posts list)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Implement post comments with a post detail view (or expandable section), including loading and error states and comment submission.",
+      "acceptanceCriteria": [
+        "User can open a post detail view and see a list of comments",
+        "User can add a comment; it appears immediately after successful submission",
+        "UI shows loading and error states for comment list and comment submission"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/PostDetailPage.tsx",
+          "operation": "create",
+          "description": "Create a post detail screen that loads a post (getPostById) and its comments (getCommentsByPostId) via React Query, with loading/error states; render comment list and comment composer."
+        },
+        {
+          "path": "frontend/src/components/comments/CommentList.tsx",
+          "operation": "create",
+          "description": "Create a comments list component that renders comments with author name and formatted timestamp, and displays empty/loading/error states based on props."
+        },
+        {
+          "path": "frontend/src/components/comments/CommentComposer.tsx",
+          "operation": "create",
+          "description": "Create a comment composer with basic validation (non-empty, reasonable length) and English error messages; submit via React Query mutation and clear input on success."
+        },
+        {
+          "path": "frontend/src/hooks/queries/usePost.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for fetching a single post and its comments with distinct query keys for correct caching/invalidation."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useCreateComment.ts",
+          "operation": "create",
+          "description": "Add a React Query mutation hook for createComment that updates/invalidates the comments query and any derived comment count UI on success."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the PostDetailPage route and ensure PostCard links/navigates to it (to avoid orphaned detail view)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement user profiles with follow/unfollow, counts, post grid/list, and editable own profile fields (display name, bio, avatar).",
+      "acceptanceCriteria": [
+        "Profile page displays user info and post grid/list",
+        "Follow/unfollow updates relationship and follower counts",
+        "Signed-in user can edit their own profile (display name, bio, avatar) and changes persist",
+        "Non-owners cannot see edit controls for another user’s profile"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "create",
+          "description": "Create a profile screen that can show the signed-in user’s profile and other users’ profiles, displaying avatar, display name, bio, counts (posts/followers/following), and a grid/list of posts."
+        },
+        {
+          "path": "frontend/src/components/profile/ProfileHeader.tsx",
+          "operation": "create",
+          "description": "Create a profile header UI with avatar (ExternalBlob.getDirectURL or fallback to frontend/public/assets/generated/avatar-placeholder.dim_256x256.png), display name, bio, follower/following counts, and conditional follow/unfollow + edit buttons."
+        },
+        {
+          "path": "frontend/src/components/profile/EditProfileDialog.tsx",
+          "operation": "create",
+          "description": "Create an edit profile dialog for the signed-in user only; allow editing display name, bio, and avatar image (uploaded as ExternalBlob using blob-storage). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useProfiles.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for fetching self profile (getSelfProfile), fetching a profile by id (getProfileById), and follower/following counts (countFollowers/countFollowing), plus optional profile search (listProfiles) if needed by navigation."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useToggleFollow.ts",
+          "operation": "create",
+          "description": "Add a React Query mutation hook calling toggleFollow and invalidate relevant profile/count queries so follow state and counts update immediately."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useUpdateProfile.ts",
+          "operation": "create",
+          "description": "Add React Query mutations for createProfile/updateProfile or saveCallerUserProfile (as appropriate to the UI flow) with cache invalidation so changes reflect across app shell, feed author labels where applicable, and profile screen."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire ProfilePage into the authenticated routes and navigation; ensure route parameters (e.g., profile id) are supported so users can navigate from posts to author profiles."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add a cohesive, distinctive theme and layout (no blue/purple primary) applied across feed, profile, and create-post flows with top app bar and/or bottom navigation.",
+      "acceptanceCriteria": [
+        "App uses a consistent theme across all pages (navigation, cards, buttons, inputs)",
+        "Primary palette does not use blue/purple as the main brand colors",
+        "UI includes a top app bar and/or bottom navigation appropriate for a feed-first social app"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add global Tailwind base styles and CSS variables for a consistent theme; set primary brand color away from blue/purple (e.g., warm orange/amber or green) and define light/dark tokens used by the app."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust theme extension if needed to support the chosen non-blue/purple primary palette and consistent card/surface styling across the app."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Apply the theme consistently in the app shell (app bar/bottom nav, typography, spacing) and ensure shared layout is used by feed/profile/create-post/detail screens."
+        },
+        {
+          "path": "frontend/src/components/layout/BottomNav.tsx",
+          "operation": "create",
+          "description": "Create a bottom navigation component suitable for mobile-first feed browsing (e.g., Feed, Create, Profile) and reuse it across authenticated screens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Use React Query for all server interactions with proper cache invalidation and robust loading/empty/error states on key screens.",
+      "acceptanceCriteria": [
+        "All data-fetching and write operations are implemented via React Query",
+        "Relevant queries are invalidated/refetched after mutations (e.g., like/unlike updates feed and detail views)",
+        "Loading, empty, and error states are present for key screens (feed, profile, post detail)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/backend/useBackendActor.ts",
+          "operation": "create",
+          "description": "Create a small hook that wraps useActor and exposes a typed actor plus readiness flags for React Query enabled-guards, so queries do not run until the actor is available."
+        },
+        {
+          "path": "frontend/src/hooks/queries/queryClient.ts",
+          "operation": "create",
+          "description": "Add shared React Query helpers (standard retry rules, error normalization, and a helper to invalidate related keys after mutations) to keep behavior consistent across the app."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useFeed.ts",
+          "operation": "modify",
+          "description": "Ensure the feed query uses React Query (infinite query or paged query) with correct enabled conditions and returns UI-friendly state for loading/error/empty."
+        },
+        {
+          "path": "frontend/src/hooks/queries/usePost.ts",
+          "operation": "modify",
+          "description": "Ensure post and comments queries are fully React Query-based and use consistent query keys for invalidation across feed/detail."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useProfiles.ts",
+          "operation": "modify",
+          "description": "Ensure all profile reads (self/other, counts) use React Query and are invalidated after follow or profile edits."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useCreatePost.ts",
+          "operation": "modify",
+          "description": "Invalidate/refetch feed and relevant profile post lists after successful publish so the new post appears without manual reload."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useToggleLike.ts",
+          "operation": "modify",
+          "description": "Invalidate/refetch related queries after like/unlike to keep feed and post detail consistent."
+        },
+        {
+          "path": "frontend/src/hooks/mutations/useCreateComment.ts",
+          "operation": "modify",
+          "description": "Invalidate/refetch comments (and any related post detail query) after comment submission and handle mutation loading/error states surfaced to the UI."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add generated brand assets under frontend/public/assets/generated and reference them in the UI (logo, app icon, placeholder avatar, empty feed illustration).",
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated and are referenced by the UI",
+        "Logo is visible in the app shell and/or sign-in screen",
+        "Empty state illustration is used in at least one empty state (e.g., no posts yet)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated asset file: frontend/public/assets/generated/logo.dim_512x512.png and ensure it is referenced by the UI (e.g., sign-in screen and/or app bar)."
+        },
+        {
+          "path": "frontend/public/assets/generated/app-icon.dim_1024x1024.png",
+          "operation": "create",
+          "description": "Add the generated asset file: frontend/public/assets/generated/app-icon.dim_1024x1024.png and ensure it is used where appropriate (e.g., as a PWA/icon reference if the project supports it)."
+        },
+        {
+          "path": "frontend/public/assets/generated/avatar-placeholder.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated asset file: frontend/public/assets/generated/avatar-placeholder.dim_256x256.png and use it as the default/fallback avatar in profile UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/empty-feed.dim_1200x600.png",
+          "operation": "create",
+          "description": "Add the generated asset file: frontend/public/assets/generated/empty-feed.dim_1200x600.png and render it in the feed empty state UI."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Render the logo image from frontend/public/assets/generated/logo.dim_512x512.png within the app bar to reinforce branding."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginCard.tsx",
+          "operation": "modify",
+          "description": "Render the logo image from frontend/public/assets/generated/logo.dim_512x512.png on the signed-out screen to provide brand identity."
+        },
+        {
+          "path": "frontend/src/components/profile/ProfileHeader.tsx",
+          "operation": "modify",
+          "description": "Use frontend/public/assets/generated/avatar-placeholder.dim_256x256.png as the avatar fallback when a user has no avatar image available."
+        },
+        {
+          "path": "frontend/src/pages/FeedPage.tsx",
+          "operation": "modify",
+          "description": "Render frontend/public/assets/generated/empty-feed.dim_1200x600.png in the feed empty state alongside an English empty message."
+        }
+      ]
+    }
+  ]
+}

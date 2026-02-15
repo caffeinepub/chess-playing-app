@@ -1,0 +1,207 @@
+{
+  "kind": "build_request",
+  "title": "Instagram-like social media app (feed, profiles, posting, follow, likes, comments)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement Internet Identity authentication and a signed-in/signed-out app state, so users can sign in/out and the UI reflects the current authenticated principal.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in using Internet Identity and sign out",
+        "When signed out, app shows a clear call-to-action to sign in",
+        "When signed in, app shows the user as authenticated and can access core features (feed, create post, profile)"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create backend data models and APIs for an Instagram-like social graph and content: user profiles, posts with media (image), captions, timestamps, likes, comments, and follow relationships; include authorization checks so only the owner can edit their profile and only the author can delete their posts/comments.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes canister methods to: create/update a user profile; create/list/get/delete posts; like/unlike posts; add/list comments; follow/unfollow; list followers/following",
+        "Backend enforces authorization using caller principal for profile updates and content deletion",
+        "All returned entities include stable identifiers and timestamps suitable for pagination/sorting"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Build the core feed experience: a home feed showing a list of posts (from followed accounts and/or global fallback), with post cards that display author, image, caption, like count, comment count, and creation time; include pagination/infinite loading.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Home feed renders a scrollable list of posts with image + caption + author",
+        "User can load more posts without a full page refresh (pagination or infinite scroll)",
+        "Like/unlike updates UI state and persists via backend API",
+        "If there are no posts, show an empty state message and illustration"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement post creation UI and flow: allow a signed-in user to select an image, preview it, write a caption, and publish; on success, the new post appears in the feed and on the user profile.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Create Post flow supports image selection, preview, caption entry, and publish action",
+        "Publish calls backend to persist the post and media",
+        "After publish, the post is visible in feed and on the author’s profile without requiring a manual reload",
+        "Validation prevents publishing without an image and provides user-facing error text in English"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement comments on posts: a post detail view (or expandable section) where users can read comments and add a new comment; include basic input validation and loading/error states.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can open a post detail view and see a list of comments",
+        "User can add a comment; it appears immediately after successful submission",
+        "UI shows loading and error states for comment list and comment submission"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement user profiles: profile page showing avatar, display name, bio, counts (posts/followers/following), follow/unfollow button for other users, and a grid/list of that user’s posts; allow the signed-in user to edit their own profile fields.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Profile page displays user info and post grid/list",
+        "Follow/unfollow updates relationship and follower counts",
+        "Signed-in user can edit their own profile (display name, bio, avatar) and changes persist",
+        "Non-owners cannot see edit controls for another user’s profile"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add a coherent, distinctive visual theme and layout system for the Instagram-like UI (typography, spacing, light/dark choices, component styling) and apply it consistently across feed, profile, and create-post flows (avoid blue/purple as primary colors).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App uses a consistent theme across all pages (navigation, cards, buttons, inputs)",
+        "Primary palette does not use blue/purple as the main brand colors",
+        "UI includes a top app bar and/or bottom navigation appropriate for a feed-first social app"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Use React Query for all server interactions (queries and mutations), including cache invalidation for creating posts, liking, commenting, and following, so the UI stays consistent without manual refreshes.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All data-fetching and write operations are implemented via React Query",
+        "Relevant queries are invalidated/refetched after mutations (e.g., like/unlike updates feed and detail views)",
+        "Loading, empty, and error states are present for key screens (feed, profile, post detail)"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add static generated brand assets (logo/app icon/illustrations) to the frontend and render them in the UI where appropriate (e.g., sign-in screen, app bar, empty states). Store generated assets under frontend/public/assets/generated.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app like Instagram"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated and are referenced by the UI",
+        "Logo is visible in the app shell and/or sign-in screen",
+        "Empty state illustration is used in at least one empty state (e.g., no posts yet)"
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Do not modify any files under frontend/src/components/ui or other immutable paths listed in SYSTEM_CONTEXT; compose these components instead.",
+    "Use English for all user-facing UI text."
+  ],
+  "nonGoals": [
+    "Stories, reels, and short-form video features",
+    "Direct messages / real-time chat",
+    "Push notifications or email/SMS notifications",
+    "Third-party authentication providers other than Internet Identity",
+    "Advanced media processing (compression/transcoding) beyond basic upload/display"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimal modern social app logo mark (insta-like but not a copy) (logo.dim_512x512.png)",
+      "App icon with the same mark, bold and high-contrast (app-icon.dim_1024x1024.png)",
+      "Neutral placeholder avatar illustration (avatar-placeholder.dim_256x256.png)",
+      "Empty feed illustration in the same style (empty-feed.dim_1200x600.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [
+      "Build an Instagram-like social media app on the Internet Computer"
+    ],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "All user-facing text in English"
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
